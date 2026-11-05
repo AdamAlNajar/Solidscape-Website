@@ -1,0 +1,18 @@
+# Dependencies
+node_modules/
+
+# Secrets - never commit real credentials
+.env
+
+# Assignment files that should not be published
+rubric.png
+assignment_rubric.png
+*rubric*.png
+report.odt
+
+# Original source folder (kept locally only)
+solidscape_contracting_website/
+
+# Editor / OS / tool files
+.DS_Store
+.freebuff/
