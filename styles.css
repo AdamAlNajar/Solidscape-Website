@@ -1,5 +1,12 @@
+/*
+  Solidscape Contracting LTD - shared stylesheet for all four pages.
+  Order: variables -> base elements -> header/nav -> page sections ->
+  footer -> contact form -> lightbox -> responsive breakpoints (900px, 650px).
+*/
+
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap');
 
+/* Colour palette and layout width reused throughout the file */
 :root {
   --ink: #242321;
   --muted: #77736d;
@@ -33,6 +40,7 @@ a {
   text-decoration: none;
 }
 
+/* Grouping selector: form controls inherit the page font */
 button,
 input,
 textarea,
@@ -64,6 +72,7 @@ select {
   mix-blend-mode: multiply;
 }
 
+/* Navigation bar - links change colour on hover; .active marks the current page */
 .navbar {
   display: flex;
   align-items: center;
@@ -86,16 +95,6 @@ select {
 .navbar a.active {
   border-bottom: 2px solid var(--gold);
   padding-bottom: 8px;
-}
-
-.language-toggle {
-  border: 1px solid #c7b47e;
-  background: transparent;
-  padding: 8px 12px;
-  font-size: 12px;
-  font-weight: 700;
-  white-space: nowrap;
-  cursor: pointer;
 }
 
 .menu-toggle {
@@ -346,6 +345,11 @@ h2 {
 
 .footer-links a {
   font-size: 12px;
+  transition: color .2s;
+}
+
+.footer-links a:hover {
+  color: var(--gold);
 }
 
 .site-footer small {
@@ -399,8 +403,12 @@ h2 {
   object-fit: contain;
 }
 
-/* Stacked social icons on right side */
+/* Stacked social icons fixed to the right side (moved here from inline styles) */
 .social-stacked {
+  position: fixed;
+  right: 12px;
+  bottom: 100px;
+  z-index: 10;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
@@ -524,15 +532,12 @@ h2 {
   border: 1px solid var(--line);
 }
 
+/* Project photo: clicking it opens the lightbox (see script.js) */
 .project-image {
   height: 220px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 16px;
-  color: #3c3933;
   position: relative;
   overflow: hidden;
+  background: #d6c9b3;
 }
 
 .project-image img {
@@ -540,62 +545,25 @@ h2 {
   height: 100%;
   object-fit: cover;
   display: block;
+  cursor: zoom-in;
+  transition: transform .35s;
 }
 
-.project-image:before,
-.project-image:after {
-  content: "";
-  position: absolute;
-  border: 1px solid #ffffff80;
-  transform: rotate(-28deg);
-  width: 150%;
-  height: 100px;
-  left: -20%;
-  top: 45px;
+/* Descendant selector: zoom the photo slightly when the card is hovered */
+.project-card:hover .project-image img {
+  transform: scale(1.05);
 }
 
-.project-image:after {
-  transform: rotate(28deg);
-  top: 90px;
-}
-
-.project-image span,
-.project-image b {
-  position: relative;
-  z-index: 1;
-}
-
+/* Project number badge in the corner of each photo */
 .project-image span {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: #f7f6f2e6;
+  color: var(--ink);
   font-size: 11px;
   font-weight: 700;
-}
-
-.project-image b {
-  font-size: 10px;
-  letter-spacing: 2px;
-  align-self: center;
-  background: #f7f6f2c9;
-  padding: 7px 10px;
-}
-
-.image-two {
-  background: #c8c0b0;
-}
-
-.image-three {
-  background: #b9b3a6;
-}
-
-.image-four {
-  background: #d6c9b3;
-}
-
-.image-five {
-  background: #c1b8a5;
-}
-
-.image-six {
-  background: #d2cfc5;
+  padding: 4px 8px;
 }
 
 .project-info {
@@ -768,26 +736,127 @@ h2 {
   font-size: 10px;
 }
 
-.rtl {
-  direction: rtl;
+/* <address> is italic by default - keep it in the normal font style */
+.contact-address {
+  font-style: normal;
 }
 
-.rtl .navbar {
-  direction: rtl;
+.contact-detail a:hover {
+  color: #9b752d;
+  text-decoration: underline;
 }
 
-.rtl .hero,
-.rtl .section-intro,
-.rtl .about-layout,
-.rtl .contact-layout {
-  direction: rtl;
+/* Character counter under the message box */
+.char-count {
+  display: block;
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 4px;
 }
 
-.rtl .floating-contact {
-  right: auto;
-  left: 20px;
+/* Radio button group for preferred reply method */
+.radio-group {
+  border: 0;
+  padding: 0;
+  margin: 16px 0 0;
 }
 
+.radio-group legend {
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 7px;
+}
+
+/* Descendant selector: radio labels sit side by side, unlike other labels */
+.contact-form .radio-group label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0 18px 0 0;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.contact-form .radio-group input {
+  display: inline-block;
+  width: auto;
+  accent-color: var(--gold);
+}
+
+/* Validation messages added by showError() in script.js */
+.error-message {
+  display: block;
+  color: #b3261e;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.contact-form .input-error {
+  border-color: #b3261e;
+}
+
+.form-status.success {
+  color: #2e7d32;
+}
+
+.form-status.failure {
+  color: #b3261e;
+}
+
+/* Full-screen photo viewer for the showcase page */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: #000000d9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  cursor: zoom-out;
+}
+
+/* The hidden attribute must win over display:flex above */
+.lightbox[hidden] {
+  display: none;
+}
+
+.lightbox figure {
+  margin: 0;
+  max-width: 1000px;
+  text-align: center;
+}
+
+.lightbox img {
+  max-width: 100%;
+  max-height: 80vh;
+  display: block;
+  margin: 0 auto;
+}
+
+.lightbox figcaption {
+  color: #f7f6f2;
+  font-size: 14px;
+  margin-top: 12px;
+}
+
+.lightbox-close {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  background: none;
+  border: 0;
+  color: #fff;
+  font-size: 40px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.lightbox-close:hover {
+  color: var(--gold);
+}
+
+/* Tablet: collapse nav into the menu button */
 @media (max-width: 900px) {
   .site-header {
     min-height: 82px;
@@ -820,9 +889,6 @@ h2 {
     border-bottom: 0;
     padding-bottom: 0;
   }
-  .language-toggle {
-    align-self: flex-start;
-  }
   .hero {
     grid-template-columns: 1fr 1fr;
     gap: 4%;
@@ -843,6 +909,7 @@ h2 {
   }
 }
 
+/* Phone: single-column layouts */
 @media (max-width: 650px) {
   .site-header,
   .hero,
@@ -941,9 +1008,5 @@ h2 {
   .floating-contact {
     right: 12px;
     bottom: 12px;
-  }
-  .rtl .floating-contact {
-    left: 12px;
-    right: auto;
   }
 }
