@@ -11,15 +11,15 @@
 <body>
 
 <header class="site-header">
-  <a class="brand" href="index.html">
+  <a class="brand" href="index.html" aria-label="Solidscape home">
     <img src="assets/solidscape-logo.png" alt="Solidscape logo">
   </a>
   <button class="menu-toggle" aria-label="Open navigation" aria-expanded="false">☰</button>
   <nav class="navbar" aria-label="Main navigation">
-    <a href="index.html" data-en="Home">Home</a>
-    <a class="active" href="about.html" data-en="About Us">About Us</a>
-    <a href="showcase.html" data-en="Our Work">Showcase of Our Work</a>
-    <a href="contactus.html" data-en="Contact">Contact us</a>
+    <a href="index.html">Home</a>
+    <a class="active" href="about.html">About Us</a>
+    <a href="showcase.html">Showcase of Our Work</a>
+    <a href="contactus.html">Contact us</a>
   </nav>
 </header>
 
@@ -79,12 +79,13 @@
       <p class="eyebrow">YOUR PROJECT STARTS HERE</p>
       <h2>Tell us what you'd like to change.</h2>
     </div>
-    <a class="button button-gold" href="contactus.html" data-en="Contact us →">Contact us →</a>
+    <a class="button button-gold" href="contactus.html">Contact us →</a>
   </section>
 </main>
 
+<!-- Site footer (same on every page) -->
 <footer class="site-footer">
-  <a href="index.html" class="footer-brand">SOLIDSCALE</a>
+  <a href="index.html" class="footer-brand">SOLIDSCAPE</a>
   <p>Solid solutions, endless possibilities.</p>
   <div class="footer-links">
     <a href="about.html">About Us</a>
@@ -94,16 +95,17 @@
   <small>© <span data-year></span> Solidscape Contracting LTD. All rights reserved.</small>
 </footer>
 
-<div class="social-stacked" style="position:fixed;right:12px;bottom:100px;z-index:10">
-  <a href="https://wa.me/+971508861666" class="social-icon whatsapp" target="_blank" aria-label="WhatsApp">
+<!-- Floating social links (WhatsApp is the preferred contact method) -->
+<div class="social-stacked">
+  <a href="https://wa.me/+971508861666" class="social-icon whatsapp" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
     <img src="assets/whatsapp.webp" alt="WhatsApp">
   </a>
-  <a href="https://www.instagram.com/solidscape.dubai" class="social-icon instagram" target="_blank" aria-label="Instagram">
+  <a href="https://www.instagram.com/solidscape.dubai" class="social-icon instagram" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
     <img src="assets/instagram.webp" alt="Instagram">
   </a>
 </div>
 
-<a class="floating-contact" href="contactus.html">Let's talk</a>
+<a class="floating-contact" href="contactus.html" aria-label="Contact Solidscape">Let's talk</a>
 
 </body>
 </html>
