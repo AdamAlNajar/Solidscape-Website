@@ -247,14 +247,15 @@ function openLightbox(button) {
   // Use the project title and type from the same card as the caption
   const card = button.closest('.project-card');
   const title = card.querySelector('h3').textContent;
-  const type = card.querySelector('.project-type').textContent;
+  const typeLabel = card.querySelector('.project-type');
+  const type = typeLabel ? ` - ${typeLabel.textContent}` : ''; // not every card needs a type
   const slide = button.closest('li');
   const photoCount = slide.parentElement.children.length;
   const position = photoCount > 1 ? ` (photo ${slide.getAttribute('aria-label')})` : '';
 
   bigImage.src = img.src;
   bigImage.alt = img.alt;
-  caption.textContent = `${title} - ${type}${position}`;
+  caption.textContent = `${title}${type}${position}`;
   lightboxOpener = button;
   lightbox.hidden = false;
   document.body.style.overflow = 'hidden'; // stop the page scrolling behind it
