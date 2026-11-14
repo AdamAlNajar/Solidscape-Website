@@ -532,7 +532,7 @@ h2 {
   border: 1px solid var(--line);
 }
 
-/* Project photo: clicking it opens the lightbox (see script.js) */
+/* Project photo area: holds the photo carousel and the project number */
 .project-image {
   height: 220px;
   position: relative;
@@ -540,22 +540,64 @@ h2 {
   background: #d6c9b3;
 }
 
-.project-image img {
+.carousel {
+  height: 100%;
+}
+
+/* The photos sit side by side; scroll-snap gives native swiping on phones
+   and always stops exactly on one photo */
+.carousel-track {
+  display: flex;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none; /* hide the scrollbar - arrows and dots replace it */
+}
+
+.carousel-track::-webkit-scrollbar {
+  display: none;
+}
+
+.carousel-track li {
+  flex: 0 0 100%;
+  height: 100%;
+  overflow: hidden;
+  scroll-snap-align: start;
+}
+
+/* Each photo is a button (added by script.js) so it can be opened with the keyboard */
+.photo-button {
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: zoom-in;
+}
+
+.carousel-track img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
-  cursor: zoom-in;
   transition: transform .35s;
 }
 
-/* Descendant selector: zoom the photo slightly when the card is hovered */
-.project-card:hover .project-image img {
-  transform: scale(1.05);
+/* Descendant selector: zoom the photo slightly when the card is hovered.
+   Only on devices with a mouse, so the zoom doesn't get stuck on after a tap. */
+@media (hover: hover) {
+  .project-card:hover .carousel-track img {
+    transform: scale(1.05);
+  }
 }
 
 /* Project number badge in the corner of each photo */
-.project-image span {
+.project-number,
+.carousel-counter {
   position: absolute;
   top: 12px;
   left: 12px;
@@ -564,6 +606,123 @@ h2 {
   font-size: 11px;
   font-weight: 700;
   padding: 4px 8px;
+  pointer-events: none;
+}
+
+/* "2 / 4" photo counter in the opposite corner */
+.carousel-counter {
+  left: auto;
+  right: 12px;
+}
+
+/* Previous / next arrows: 44px square so they are easy to tap (WCAG 2.5.5) */
+.carousel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 50%;
+  background: #f7f6f2e6;
+  color: var(--ink);
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background .2s;
+}
+
+.carousel-prev {
+  left: 10px;
+}
+
+.carousel-next {
+  right: 10px;
+}
+
+.carousel-arrow:hover {
+  background: var(--gold);
+}
+
+/* Row of dots along the bottom of the photo */
+.carousel-dots {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  padding: 0 4px;
+  border-radius: 14px;
+  background: #20201e80;
+}
+
+/* Each dot button is 24px for tapping (WCAG 2.5.8); the visible dot is drawn inside it */
+.carousel-dot {
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.carousel-dot::before {
+  content: "";
+  display: block;
+  width: 8px;
+  height: 8px;
+  margin: auto;
+  border-radius: 50%;
+  border: 1px solid #fff;
+}
+
+.carousel-dot:hover::before {
+  background: var(--gold-light);
+}
+
+/* The dot for the photo on screen is filled in */
+.carousel-dot[aria-current="true"]::before {
+  background: #fff;
+}
+
+/* Clear keyboard focus ring that shows up on both light and dark photos */
+.carousel-arrow:focus-visible,
+.carousel-dot:focus-visible,
+.lightbox-close:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 1px;
+  box-shadow: 0 0 0 5px var(--ink);
+}
+
+.photo-button:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: -6px;
+}
+
+/* Text for screen readers only (e.g. "Photo 2 of 4") */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Visitors who ask their device for less motion get no zoom or sliding */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .carousel-track img {
+    transition: none;
+  }
+  .project-card:hover .carousel-track img {
+    transform: none;
+  }
 }
 
 .project-info {

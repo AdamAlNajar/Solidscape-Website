@@ -38,15 +38,21 @@
         <p class="eyebrow">THE PORTFOLIO</p>
         <h2>Spaces, thoughtfully renewed.</h2>
       </div>
-      <p class="muted">Click any photo to view it full size.</p>
+      <p class="muted">Swipe or use the arrows to browse each project's photos. Click a photo to view it full size.</p>
     </div>
 
     <div class="project-grid">
       <!-- Project card 1 -->
       <article class="project-card">
         <div class="project-image image-one">
-          <img src="assets/project1.jpg" alt="Project One - Home Renovation">
-          <span>01</span>
+          <!-- Photo carousel: add one <li><img ...></li> line per photo.
+               The arrows, dots and swipe are added automatically by script.js. -->
+          <div class="carousel" aria-label="Project One photos">
+            <ul class="carousel-track">
+              <li><img src="assets/project1.jpg" alt="Project One - Home Renovation"></li>
+            </ul>
+          </div>
+          <span class="project-number">01</span>
         </div>
         <div class="project-info">
           <p class="project-type">Home Renovation</p>
@@ -58,8 +64,14 @@
       <!-- Project card 2 -->
       <article class="project-card">
         <div class="project-image image-two">
-          <img src="assets/project2.jpg" alt="Project Two - Interior Upgrade">
-          <span>02</span>
+          <!-- Photo carousel: add one <li><img ...></li> line per photo.
+               The arrows, dots and swipe are added automatically by script.js. -->
+          <div class="carousel" aria-label="Project Two photos">
+            <ul class="carousel-track">
+              <li><img src="assets/project2.jpg" alt="Project Two - Interior Upgrade"></li>
+            </ul>
+          </div>
+          <span class="project-number">02</span>
         </div>
         <div class="project-info">
           <p class="project-type">Interior Upgrade</p>
@@ -71,8 +83,14 @@
       <!-- Project card 3 -->
       <article class="project-card">
         <div class="project-image image-three">
-          <img src="assets/project3.jpg" alt="Project Three - Kitchen Bathroom">
-          <span>03</span>
+          <!-- Photo carousel: add one <li><img ...></li> line per photo.
+               The arrows, dots and swipe are added automatically by script.js. -->
+          <div class="carousel" aria-label="Project Three photos">
+            <ul class="carousel-track">
+              <li><img src="assets/project3.jpg" alt="Project Three - Kitchen Bathroom"></li>
+            </ul>
+          </div>
+          <span class="project-number">03</span>
         </div>
         <div class="project-info">
           <p class="project-type">Kitchen / Bathroom</p>
@@ -84,8 +102,14 @@
       <!-- Project card 4 -->
       <article class="project-card">
         <div class="project-image image-four">
-          <img src="assets/project4.jpg" alt="Project Four - Space Improvement">
-          <span>04</span>
+          <!-- Photo carousel: add one <li><img ...></li> line per photo.
+               The arrows, dots and swipe are added automatically by script.js. -->
+          <div class="carousel" aria-label="Project Four photos">
+            <ul class="carousel-track">
+              <li><img src="assets/project4.jpg" alt="Project Four - Space Improvement"></li>
+            </ul>
+          </div>
+          <span class="project-number">04</span>
         </div>
         <div class="project-info">
           <p class="project-type">Space Improvement</p>
@@ -97,8 +121,14 @@
       <!-- Project card 5 -->
       <article class="project-card">
         <div class="project-image image-five">
-          <img src="assets/project5.jpg" alt="Project Five - Residential Work">
-          <span>05</span>
+          <!-- Photo carousel: add one <li><img ...></li> line per photo.
+               The arrows, dots and swipe are added automatically by script.js. -->
+          <div class="carousel" aria-label="Project Five photos">
+            <ul class="carousel-track">
+              <li><img src="assets/project5.jpg" alt="Project Five - Residential Work"></li>
+            </ul>
+          </div>
+          <span class="project-number">05</span>
         </div>
         <div class="project-info">
           <p class="project-type">Residential Work</p>
@@ -110,8 +140,14 @@
       <!-- Project card 6 -->
       <article class="project-card">
         <div class="project-image image-six">
-          <img src="assets/project6.jpg" alt="Project Six - Custom Project">
-          <span>06</span>
+          <!-- Photo carousel: add one <li><img ...></li> line per photo.
+               The arrows, dots and swipe are added automatically by script.js. -->
+          <div class="carousel" aria-label="Project Six photos">
+            <ul class="carousel-track">
+              <li><img src="assets/project6.jpg" alt="Project Six - Custom Project"></li>
+            </ul>
+          </div>
+          <span class="project-number">06</span>
         </div>
         <div class="project-info">
           <p class="project-type">Custom Project</p>
@@ -123,7 +159,7 @@
   </section>
 
   <!-- Lightbox: hidden until a project photo is clicked (see script.js) -->
-  <div class="lightbox" id="lightbox" hidden>
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Full size photo" hidden>
     <button class="lightbox-close" type="button" aria-label="Close photo">&times;</button>
     <figure>
       <img id="lightbox-image" src="" alt="">

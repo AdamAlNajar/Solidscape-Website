@@ -3,8 +3,9 @@
 
   Mouse-event features:
     1. toggleMenu()     - click the ☰ button to open/close the mobile nav.
-    2. openLightbox()   - click a project photo on the showcase page to view it full size.
-    3. closeLightbox()  - click the dark background or × button to close it again.
+    2. goTo()           - click the arrows or dots (or swipe) to move through a project's photos.
+    3. openLightbox()   - click a project photo on the showcase page to view it full size.
+    4. closeLightbox()  - click the dark background or × button to close it again.
 
   Form features (contact page only):
     - validateForm() checks presence, length and range before anything is sent.
@@ -27,6 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   setUpMenu();
+  setUpCarousels(); // must run before setUpLightbox(), which uses the photo buttons it creates
   setUpLightbox();
   setUpContactForm();
 });
@@ -49,15 +51,171 @@ function toggleMenu(menuButton, navbar) {
   menuButton.textContent = isOpen ? '✕' : '☰';
 }
 
-/* ---------- 2. Showcase photo lightbox ---------- */
+/* ---------- 2. Showcase photo carousels ---------- */
+
+/*
+  Each project card has a <div class="carousel"> holding a list of photos.
+  To add a photo, add another <li><img src="..." alt="..."></li> to that list -
+  this code counts the photos and builds the arrows, dots and counter for you.
+
+  Accessibility (follows the WAI-ARIA Authoring Practices carousel pattern):
+    - the carousel is a labelled region and each photo is a labelled "slide"
+    - real <button>s for previous / next / each dot, with clear labels
+    - left/right arrow keys move between photos when the carousel has focus
+    - a polite live region tells screen-reader users which photo is showing
+    - photos that are off screen are made inert so Tab skips them
+    - no auto-play, and no sliding animation if the visitor prefers reduced motion
+  On phones the photos can also be swiped (CSS scroll-snap, see styles.css).
+*/
+
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+function setUpCarousels() {
+  document.querySelectorAll('.carousel').forEach((carousel, number) => {
+    setUpCarousel(carousel, number + 1);
+  });
+}
+
+function setUpCarousel(carousel, number) {
+  const track = carousel.querySelector('.carousel-track');
+  const slides = Array.from(track.children);
+  const total = slides.length;
+  let current = 0;
+
+  track.id = `carousel-track-${number}`;
+  carousel.setAttribute('role', 'region');
+  carousel.setAttribute('aria-roledescription', 'carousel');
+
+  slides.forEach((slide, index) => {
+    slide.setAttribute('role', 'group');
+    slide.setAttribute('aria-roledescription', 'slide');
+    slide.setAttribute('aria-label', `${index + 1} of ${total}`);
+    wrapPhotoInButton(slide.querySelector('img'));
+  });
+
+  // A single photo needs no arrows or dots
+  if (total < 2) return;
+
+  carousel.classList.add('has-controls');
+
+  // Previous / next arrow buttons
+  const prevButton = makeButton('carousel-arrow carousel-prev', 'Previous photo', '‹');
+  const nextButton = makeButton('carousel-arrow carousel-next', 'Next photo', '›');
+  prevButton.setAttribute('aria-controls', track.id);
+  nextButton.setAttribute('aria-controls', track.id);
+  prevButton.addEventListener('click', () => goTo(current - 1));
+  nextButton.addEventListener('click', () => goTo(current + 1));
+
+  // One dot per photo, so the visitor can jump straight to any photo
+  const dots = document.createElement('div');
+  dots.className = 'carousel-dots';
+  const dotButtons = slides.map((slide, index) => {
+    const dot = makeButton('carousel-dot', `Show photo ${index + 1} of ${total}`, '');
+    dot.setAttribute('aria-controls', track.id);
+    dot.addEventListener('click', () => goTo(index));
+    dots.appendChild(dot);
+    return dot;
+  });
+
+  // Visible "1 / 4" counter (hidden from screen readers - the live region says it instead)
+  const counter = document.createElement('span');
+  counter.className = 'carousel-counter';
+  counter.setAttribute('aria-hidden', 'true');
+
+  // Screen readers announce whatever text is put in here
+  const status = document.createElement('p');
+  status.className = 'sr-only';
+  status.setAttribute('aria-live', 'polite');
+
+  carousel.append(prevButton, nextButton, dots, counter, status);
+
+  // Scrolls the track to a photo. Going past either end wraps round, so the
+  // arrow buttons never become disabled (which would lose keyboard focus).
+  function goTo(index) {
+    const target = (index + total) % total;
+    track.scrollTo({
+      left: target * track.clientWidth,
+      behavior: reduceMotion.matches ? 'auto' : 'smooth'
+    });
+    showSlide(target, true);
+  }
+
+  // Updates the dots, counter and hidden slides to match the photo on screen
+  function showSlide(index, announce) {
+    current = index;
+
+    slides.forEach((slide, i) => {
+      const isCurrent = i === index;
+      slide.inert = !isCurrent;
+      slide.setAttribute('aria-hidden', String(!isCurrent));
+    });
+    dotButtons.forEach((dot, i) => {
+      if (i === index) dot.setAttribute('aria-current', 'true');
+      else dot.removeAttribute('aria-current');
+    });
+    counter.textContent = `${index + 1} / ${total}`;
+    if (announce) status.textContent = `Photo ${index + 1} of ${total}`;
+  }
+
+  // Swiping on a phone scrolls the track, so work out which photo is now showing.
+  // Waits until scrolling has stopped so photos passed on the way aren't announced.
+  let scrollTimer;
+  track.addEventListener('scroll', () => {
+    clearTimeout(scrollTimer);
+    scrollTimer = setTimeout(() => {
+      const index = Math.round(track.scrollLeft / track.clientWidth);
+      if (index !== current) showSlide(index, true);
+    }, 120);
+  }, { passive: true });
+
+  // Left / right arrow keys work anywhere inside the carousel
+  carousel.addEventListener('keydown', event => {
+    if (event.key === 'ArrowLeft') {
+      event.preventDefault();
+      goTo(current - 1);
+    } else if (event.key === 'ArrowRight') {
+      event.preventDefault();
+      goTo(current + 1);
+    }
+  });
+
+  // Keep the same photo lined up if the screen is resized or rotated
+  window.addEventListener('resize', () => {
+    track.scrollLeft = current * track.clientWidth;
+  });
+
+  showSlide(0, false);
+}
+
+// Creates a <button> with a screen-reader label and optional visible text
+function makeButton(className, label, text) {
+  const button = document.createElement('button');
+  button.type = 'button';
+  button.className = className;
+  button.setAttribute('aria-label', label);
+  button.textContent = text;
+  return button;
+}
+
+// Puts each photo inside a button so keyboard users can open it in the lightbox too
+function wrapPhotoInButton(img) {
+  if (!img) return;
+  const button = makeButton('photo-button', `View full size: ${img.alt}`, '');
+  img.replaceWith(button);
+  button.appendChild(img);
+}
+
+/* ---------- 3. Showcase photo lightbox ---------- */
+
+let lightboxOpener = null; // the photo button that opened the lightbox
 
 function setUpLightbox() {
   const lightbox = document.querySelector('#lightbox');
   if (!lightbox) return; // only the showcase page has a lightbox
 
-  // Clicking any project photo opens it in the lightbox
-  document.querySelectorAll('.project-image img').forEach(img => {
-    img.addEventListener('click', () => openLightbox(img));
+  // Clicking any project photo (or pressing Enter/Space on it) opens the lightbox
+  document.querySelectorAll('.photo-button').forEach(button => {
+    button.addEventListener('click', () => openLightbox(button));
   });
 
   // Clicking the dark background or the × button closes it.
@@ -68,25 +226,36 @@ function setUpLightbox() {
     }
   });
 
-  // Keyboard users can close it with Escape
   document.addEventListener('keydown', event => {
-    if (event.key === 'Escape' && !lightbox.hidden) closeLightbox();
+    if (lightbox.hidden) return;
+    // Keyboard users can close it with Escape
+    if (event.key === 'Escape') closeLightbox();
+    // The × is the only control, so keep Tab focus on it instead of the page behind
+    if (event.key === 'Tab') {
+      event.preventDefault();
+      lightbox.querySelector('.lightbox-close').focus();
+    }
   });
 }
 
-function openLightbox(img) {
+function openLightbox(button) {
+  const img = button.querySelector('img');
   const lightbox = document.querySelector('#lightbox');
   const bigImage = document.querySelector('#lightbox-image');
   const caption = document.querySelector('#lightbox-caption');
 
-  // Use the project title and description from the same card as the caption
-  const card = img.closest('.project-card');
+  // Use the project title and type from the same card as the caption
+  const card = button.closest('.project-card');
   const title = card.querySelector('h3').textContent;
   const type = card.querySelector('.project-type').textContent;
+  const slide = button.closest('li');
+  const photoCount = slide.parentElement.children.length;
+  const position = photoCount > 1 ? ` (photo ${slide.getAttribute('aria-label')})` : '';
 
   bigImage.src = img.src;
   bigImage.alt = img.alt;
-  caption.textContent = `${title} - ${type}`;
+  caption.textContent = `${title} - ${type}${position}`;
+  lightboxOpener = button;
   lightbox.hidden = false;
   document.body.style.overflow = 'hidden'; // stop the page scrolling behind it
   lightbox.querySelector('.lightbox-close').focus();
@@ -95,9 +264,12 @@ function openLightbox(img) {
 function closeLightbox() {
   document.querySelector('#lightbox').hidden = true;
   document.body.style.overflow = '';
+  // Put keyboard focus back on the photo that was opened
+  if (lightboxOpener) lightboxOpener.focus();
+  lightboxOpener = null;
 }
 
-/* ---------- 3. Contact form ---------- */
+/* ---------- 4. Contact form ---------- */
 
 function setUpContactForm() {
   const form = document.querySelector('#contact-form');
