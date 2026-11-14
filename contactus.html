@@ -42,19 +42,38 @@
       <address class="contact-address">
         <div class="contact-detail">
           <span>PHONE</span>
-          <p><a href="tel:+971508861666">+971 50 886 1666</a></p>
-          <p><a href="tel:+971544464565">+971 54 446 4565</a></p>
+          <p><a href="tel:+971508861666">+971 50 886 1666 - Mr. Mohammad Al Najar</a></p> 
+          <p><a href="tel:+971544464565">+971 54 446 4565 - Mr. Malik Waqas</a></p>
         </div>
         <div class="contact-detail">
           <span>EMAIL</span>
           <p><a href="mailto:contact@solidscape-uae.com">contact@solidscape-uae.com</a></p>
         </div>
-        <div class="location-block">
-          <div class="label">LOCATION</div>
-          <p class="address">
-            Once you reach, come up to the second floor, office number 203
-            <a href="https://maps.app.goo.gl/VRzyqu8CTGCXWM6B6" target="_blank" rel="noopener noreferrer">View on Google Maps</a>
-          </p>
+        <!-- Location: written address, embedded map and links to Google Maps -->
+        <div class="contact-detail location-block">
+          <span>LOCATION</span>
+          <p><strong>Office 203, 2nd floor</strong></p>
+          <p>Dubai, United Arab Emirates</p>
+          <p class="location-hint">When you arrive, take the lift or stairs to the second floor.</p>
+
+          <!-- Map loads only when scrolled into view (loading="lazy"); the title is read by screen readers -->
+          <div class="map-frame">
+            <iframe
+              src="https://www.google.com/maps?q=25.1578364,55.2507374&amp;z=16&amp;output=embed"
+              title="Map showing the Solidscape Contracting office in Dubai"
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              allowfullscreen></iframe>
+          </div>
+
+          <div class="location-actions">
+            <a class="button button-gold" href="https://www.google.com/maps/dir/?api=1&amp;destination=25.1578364,55.2507374" target="_blank" rel="noopener noreferrer">
+              Get directions <span class="sr-only">(opens in a new tab)</span>
+            </a>
+            <a class="button button-outline" href="https://maps.app.goo.gl/VRzyqu8CTGCXWM6B6" target="_blank" rel="noopener noreferrer">
+              View on Google Maps <span class="sr-only">(opens in a new tab)</span>
+            </a>
+          </div>
         </div>
       </address>
 

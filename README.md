@@ -11,7 +11,7 @@ server that emails contact-form enquiries to the company.
 |---|---|---|
 | Home | `index.html` | First impression: what the company does, three key strengths, call to action |
 | About Us | `about.html` | Company story, mission and values |
-| Our Work | `showcase.html` | Six completed projects with photos; click a photo to enlarge it |
+| Our Work | `showcase.html` | Six completed projects, each with a swipeable photo carousel; click a photo to enlarge it |
 | Contact Us | `contactus.html` | Phone, email, location and an enquiry form |
 
 ## File structure
@@ -20,12 +20,13 @@ server that emails contact-form enquiries to the company.
 .
 ├── index.html          Home page
 ├── about.html          About Us page
-├── showcase.html       Project showcase (with photo lightbox)
+├── showcase.html       Project showcase (photo carousels + lightbox)
 ├── contactus.html      Contact details + enquiry form
 ├── styles.css          The single external stylesheet used by every page
-├── script.js           Client-side JavaScript (menu, lightbox, form validation)
+├── script.js           Client-side JavaScript (menu, carousels, lightbox, form validation)
 ├── server.js           Express server: serves the site and emails form enquiries
-├── assets/             Logo, project photos and social icons
+├── assets/             Logo and social icons
+│   └── projects/       One folder of carousel photos per project (project1-6)
 ├── docs/
 │   ├── planning.md     Audience note, site map and wireframes
 │   └── testing.md      Test table, compatibility and usability checks
@@ -47,8 +48,18 @@ server that emails contact-form enquiries to the company.
   650px) adapt the layout for tablets and phones.
 - **JavaScript** (`script.js`)
   - `toggleMenu()` – clicking ☰ opens/closes the navigation on small screens.
+  - `setUpCarousel()` / `goTo()` – each project has a photo carousel. The
+    arrows, dots and counter are built automatically from however many photos
+    are in the list, so adding a photo only takes one line of HTML (see below).
+    Photos can be swiped on phones (CSS scroll-snap) and changed with the
+    left/right arrow keys. It follows the WAI-ARIA carousel pattern: labelled
+    region and slides, real buttons with labels, a live region announcing
+    "Photo 2 of 4", hidden photos made `inert`, no auto-play, and no animation
+    when the visitor has *reduce motion* switched on.
   - `openLightbox()` / `closeLightbox()` – clicking a project photo shows it
     full size; clicking the background or × closes it (Escape also works).
+    Photos are buttons, so the lightbox also opens from the keyboard, and
+    focus returns to the photo when it closes.
   - `validateForm()` – checks the contact form before sending: required fields
     are present, name/message are within length limits, email and phone are in
     a valid format, and the start date is not in the past. Each problem is
@@ -57,6 +68,26 @@ server that emails contact-form enquiries to the company.
 - **Server** (`server.js`) – checks the form again (never trust the browser
   alone) and sends it as a plain-text email using Nodemailer. Only the public
   site files are served, so `.env` and source files can't be downloaded.
+
+## Adding a project photo
+
+Each project's photos live in their own folder, `assets/projects/project1/`
+to `assets/projects/project6/`, numbered in the order they appear. Put the new
+photo in the right folder, then in `showcase.html` find that project's
+`<ul class="carousel-track">` and add one line:
+
+```html
+<ul class="carousel-track">
+  <li><img src="assets/projects/project1/01-master-bedroom.jpeg" alt="Project One - Master bedroom with a wooden feature wall"></li>
+  <li><img src="assets/projects/project1/09-new-photo.jpeg" alt="Project One - what the photo shows" loading="lazy"></li>
+</ul>
+```
+
+Add `loading="lazy"` to every photo except the first, so the page loads quickly.
+Photos not currently used on the site are kept in `assets/projects/unused/`.
+
+Always write a short `alt` description of what the photo shows. A project with
+one photo shows no arrows or dots; they appear as soon as there are two.
 
 ## Running it locally
 
