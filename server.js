@@ -1,7 +1,7 @@
 /*
   Solidscape Contracting LTD - Express server.
   Serves the static site and handles the contact form at POST /api/contact.
-  Run with: npm start  (settings are read from .env - see .env.example)
+  Run with: npm start  (settings come from .env locally, or Config Vars on Heroku - see README)
 */
 require('dotenv').config();
 

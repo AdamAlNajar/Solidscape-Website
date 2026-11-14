@@ -27,11 +27,10 @@ server that emails contact-form enquiries to the company.
 ├── server.js           Express server: serves the site and emails form enquiries
 ├── assets/             Logo and social icons
 │   └── projects/       One folder of carousel photos per project (project1-6)
-├── docs/
-│   ├── planning.md     Audience note, site map and wireframes
-│   └── testing.md      Test table, compatibility and usability checks
+├── Designs/            Site map and wireframes (PNG)
+├── H00567500_EntryCS_Unit3_Plan.odt   Plan/report: audience, site map, wireframes
+├── Testing.odt         Test table, compatibility and usability checks
 ├── package.json        Node dependencies (express, nodemailer, dotenv)
-├── .env.example        Template for the private .env settings file
 └── .gitignore          Keeps .env, node_modules and assignment files out of Git
 ```
 
@@ -96,8 +95,10 @@ one photo shows no arrows or dots; they appear as soon as there are two.
    ```bash
    npm install
    ```
-3. Copy `.env.example` to `.env` and fill in your email (SMTP) details.
-   `.env` is listed in `.gitignore` so passwords are never committed.
+3. Create a file called `.env` in the project folder and add your email
+   (SMTP) details using the variables in the table below, one per line,
+   e.g. `EMAIL_USER=you@example.com`. `.env` is listed in `.gitignore`
+   so passwords are never committed.
 4. Start the server:
    ```bash
    npm start
@@ -119,8 +120,28 @@ form needs the server to send emails.
 | `EMAIL_FROM` | `EMAIL_USER` | Address the enquiry emails are sent from |
 | `EMAIL_TO` | `contact@solidscape-uae.com` | Where enquiries are delivered |
 
+## Deploying to Heroku
+
+The repo is ready for Heroku: `Procfile` tells Heroku to run `npm start`,
+`package.json` pins the Node version, and `.slugignore` leaves out files the
+live site doesn't need (planning documents, unused photos).
+
+1. In the [Heroku dashboard](https://dashboard.heroku.com/), click
+   **New → Create new app**, choose a name (e.g. `solidscape-website`) and
+   the **Europe** region (closest to Dubai).
+2. **Deploy** tab → Deployment method **GitHub** → connect this repository
+   → **Enable Automatic Deploys** from `main`, then **Deploy Branch**.
+3. **Settings** tab → **Reveal Config Vars** → add the email variables from
+   the table above (`EMAIL_HOST`, `EMAIL_USER`, `EMAIL_PASS`, ...). Do not add
+   `PORT` - Heroku sets it automatically.
+4. Click **Open app**. Every push to `main` now redeploys the site.
+
+If something goes wrong, **More → View logs** shows the server output.
+
 ## Planning and testing
 
-- Planning (audience, site map, wireframes): [`docs/planning.md`](docs/planning.md)
+- Planning (audience note, site map, wireframes and page descriptions):
+  [`H00567500_EntryCS_Unit3_Plan.odt`](H00567500_EntryCS_Unit3_Plan.odt)
+- Site map and wireframe images: [`Designs/`](Designs/)
 - Testing (tests, failures and fixes, browsers, screen sizes, visitor task):
-  [`docs/testing.md`](docs/testing.md)
+  [`Testing.odt`](Testing.odt)

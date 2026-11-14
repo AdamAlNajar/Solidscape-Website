@@ -1,0 +1,6 @@
+# Files Heroku does not need to run the website (keeps the deploy small and fast)
+assets/projects/unused
+Designs
+*.odt
+*.docx
+graphify-out
