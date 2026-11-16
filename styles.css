@@ -970,6 +970,15 @@ h2 {
   accent-color: var(--gold);
 }
 
+/* Explains each reply option; text is changed by showReplyHint() / hideReplyHint() in script.js */
+.reply-hint {
+  display: block;
+  min-height: 1.4em; /* keep the space so the form doesn't jump when the text changes */
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 6px;
+}
+
 /* Validation messages added by showError() in script.js */
 .error-message {
   display: block;

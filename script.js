@@ -6,6 +6,8 @@
     2. goTo()           - click the arrows or dots (or swipe) to move through a project's photos.
     3. openLightbox()   - click a project photo on the showcase page to view it full size.
     4. closeLightbox()  - click the dark background or × button to close it again.
+    5. showReplyHint()  - onmouseover a reply option on the contact form to see how we will reply.
+    6. hideReplyHint()  - onmouseout puts the hint back to the option that is actually selected.
 
   Form features (contact page only):
     - validateForm() checks presence, length and range before anything is sent.
@@ -279,6 +281,8 @@ function setUpContactForm() {
   const message = form.querySelector('#message');
   message.addEventListener('input', () => updateCharCount(message));
 
+  setUpReplyHints(form);
+
   // Remove a field's error as soon as the visitor starts fixing it
   form.querySelectorAll('input, select, textarea').forEach(field => {
     field.addEventListener('input', () => clearError(field));
@@ -295,6 +299,39 @@ function setUpContactForm() {
     }
     await sendForm(form);
   });
+}
+
+/*
+  Reply-method hints. Hovering over Email / Phone call / WhatsApp previews what that
+  choice means, so the visitor knows which detail we will use before picking it.
+  Moving the mouse away shows the hint for the option that is really selected.
+  Touch and keyboard users get the same hint when they select an option (change event).
+*/
+const REPLY_HINTS = {
+  'Email': 'We will reply to the email address you entered above.',
+  'Phone call': 'We will call the phone number you entered above, so please include it.',
+  'WhatsApp': 'We will message the phone number you entered above on WhatsApp, so please include it.'
+};
+
+function setUpReplyHints(form) {
+  form.querySelectorAll('.radio-group label').forEach(label => {
+    const method = label.querySelector('input').value;
+    label.onmouseover = () => showReplyHint(method);
+    label.onmouseout = () => hideReplyHint(form);
+    label.querySelector('input').onchange = () => hideReplyHint(form);
+  });
+  hideReplyHint(form); // show the hint for the default choice when the page loads
+}
+
+// onmouseover: preview the hint for the option under the mouse
+function showReplyHint(method) {
+  document.querySelector('#reply-hint').textContent = REPLY_HINTS[method];
+}
+
+// onmouseout (and on change): show the hint for the option that is currently checked
+function hideReplyHint(form) {
+  const checked = form.querySelector('input[name="contactMethod"]:checked');
+  document.querySelector('#reply-hint').textContent = checked ? REPLY_HINTS[checked.value] : '';
 }
 
 // Live "x / 4000 characters" counter under the message box
