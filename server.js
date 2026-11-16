@@ -91,6 +91,11 @@ app.post('/api/contact', async (req, res) => {
     return res.status(400).json({ error: 'Invalid contact method.' });
   }
 
+  // A phone number is needed if the visitor asked to be called or messaged on WhatsApp
+  if (contactMethod !== 'Email' && !String(phone).trim()) {
+    return res.status(400).json({ error: 'Please enter your phone number so we can reply.' });
+  }
+
   // Check that email transport is configured
   if (!transporter) {
     console.error('Email transporter is not configured.');

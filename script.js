@@ -375,6 +375,12 @@ function validateForm(form) {
   const digitCount = phoneValue.replace(/\D/g, '').length;
   if (phoneValue && (!/^[+\d\s()-]+$/.test(phoneValue) || digitCount < 7 || digitCount > 15)) {
     valid = showError(phone, 'Please enter a valid phone number (7 to 15 digits).');
+  } else if (!phoneValue) {
+    // Phone is optional, but we need it if the visitor asked us to call or WhatsApp them
+    const method = form.querySelector('input[name="contactMethod"]:checked').value;
+    if (method === 'Phone call' || method === 'WhatsApp') {
+      valid = showError(phone, `Please enter your phone number so we can reply by ${method === 'WhatsApp' ? 'WhatsApp' : 'phone'}.`);
+    }
   }
 
   // Topic: presence check
