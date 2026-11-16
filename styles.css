@@ -463,7 +463,10 @@ h2 {
   min-height: 280px;
 }
 
+/* float: the big quote mark sits on the left and the heading wraps beside it */
 .quote-mark {
+  float: left;
+  margin-right: 14px;
   font: 700 70px/1 Georgia;
   color: var(--gold);
 }
@@ -474,6 +477,7 @@ h2 {
 }
 
 .about-statement .muted {
+  clear: both; /* start below the floated quote mark, not beside it */
   font-size: 10px;
   letter-spacing: 1.5px;
   color: #b5b0a5;
