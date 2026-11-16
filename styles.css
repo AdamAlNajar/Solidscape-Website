@@ -72,8 +72,17 @@ select {
   mix-blend-mode: multiply;
 }
 
-/* Navigation bar - links change colour on hover; .active marks the current page */
+/* Navigation bar - built from a <ul> list; links change colour on hover; .active marks the current page */
 .navbar {
+  display: flex;
+  align-items: center;
+}
+
+/* Remove the list bullets and default indent so the list sits in one horizontal row */
+.navbar ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
   display: flex;
   align-items: center;
   gap: clamp(14px, 2.1vw, 30px);
@@ -1054,6 +1063,11 @@ h2 {
     border-bottom: 1px solid var(--line);
     align-items: stretch;
     flex-direction: column;
+  }
+  /* On small screens the list stacks vertically inside the drop-down menu */
+  .navbar ul {
+    flex-direction: column;
+    align-items: stretch;
     gap: 16px;
   }
   .navbar.open {
