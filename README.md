@@ -28,9 +28,9 @@ server that emails contact-form enquiries to the company.
 ├── assets/             Logo and social icons
 │   └── projects/       One folder of carousel photos per project (project1-6)
 ├── Designs/            Site map and wireframes (PNG)
-├── H00567500_EntryCS_Unit3_Plan.odt   Plan/report: audience, site map, wireframes
-├── Testing.odt         Test table, compatibility and usability checks
 ├── package.json        Node dependencies (express, nodemailer, dotenv)
+├── Procfile            Tells Heroku how to start the server
+├── .slugignore         Files Heroku leaves out of the live site
 └── .gitignore          Keeps .env, node_modules and assignment files out of Git
 ```
 
@@ -40,11 +40,14 @@ server that emails contact-form enquiries to the company.
   `section`, `article`, `figure`, `address`, `footer`). The header, navigation
   and footer are identical on every page so the site feels consistent.
 - **CSS** – one external stylesheet (`styles.css`). Colours are stored as CSS
-  variables in `:root`. The nav links change colour on hover and the current
-  page is underlined. Grouping selectors (e.g. `.hero h1, .page-hero h1`) share
-  styles, and descendant selectors (e.g. `.project-card:hover .project-image img`)
-  style elements only inside a particular parent. Two media queries (900px and
-  650px) adapt the layout for tablets and phones.
+  variables in `:root`; small gold text uses a darker `--gold-text` so it passes
+  the WCAG AA contrast minimum. The navigation bar is a `<ul>` with
+  `list-style-type: none` laid out in a row with flexbox; links change colour on
+  hover and the current page is underlined. Grouping selectors (e.g.
+  `.hero h1, .page-hero h1`) share styles, and descendant selectors (e.g.
+  `.project-card:hover .carousel-track img`) style elements only inside a
+  particular parent. `float` and `clear` place the quote mark on the About page.
+  Two media queries (900px and 650px) adapt the layout for tablets and phones.
 - **JavaScript** (`script.js`)
   - `toggleMenu()` – clicking ☰ opens/closes the navigation on small screens.
   - `setUpCarousel()` / `goTo()` – each project has a photo carousel. The
@@ -64,6 +67,10 @@ server that emails contact-form enquiries to the company.
     a valid format, and the start date is not in the past. Each problem is
     shown under the field it relates to.
   - `updateCharCount()` – live character counter for the message box.
+  - `showReplyHint()` / `hideReplyHint()` – `onmouseover` a reply option
+    (Email, Phone call, WhatsApp) to see how the company will reply;
+    `onmouseout` shows the hint for the option that is actually selected.
+    The phone number becomes required when Phone call or WhatsApp is chosen.
 - **Server** (`server.js`) – checks the form again (never trust the browser
   alone) and sends it as a plain-text email using Nodemailer. Only the public
   site files are served, so `.env` and source files can't be downloaded.
@@ -138,10 +145,6 @@ live site doesn't need (planning documents, unused photos).
 
 If something goes wrong, **More → View logs** shows the server output.
 
-## Planning and testing
+## Design files
 
-- Planning (audience note, site map, wireframes and page descriptions):
-  [`H00567500_EntryCS_Unit3_Plan.odt`](H00567500_EntryCS_Unit3_Plan.odt)
 - Site map and wireframe images: [`Designs/`](Designs/)
-- Testing (tests, failures and fixes, browsers, screen sizes, visitor task):
-  [`Testing.odt`](Testing.odt)
