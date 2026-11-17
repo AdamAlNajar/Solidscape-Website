@@ -6,11 +6,14 @@
 
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap');
 
-/* Colour palette and layout width reused throughout the file */
+/* Colour palette and layout width reused throughout the file.
+   --gold is for buttons and lines; --gold-text is a darker gold for small text on
+   light backgrounds, so it passes the WCAG AA contrast minimum of 4.5:1 (about 5.7:1). */
 :root {
   --ink: #242321;
-  --muted: #77736d;
+  --muted: #67635c;
   --gold: #c9a65b;
+  --gold-text: #7a5c22;
   --gold-light: #e7d49a;
   --paper: #f7f6f2;
   --white: #fff;
@@ -89,7 +92,7 @@ select {
 }
 
 .navbar a {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   color: #55524c;
   white-space: nowrap;
@@ -98,7 +101,7 @@ select {
 
 .navbar a:hover,
 .navbar a.active {
-  color: #9b752d;
+  color: var(--gold-text);
 }
 
 .navbar a.active {
@@ -128,10 +131,10 @@ select {
 }
 
 .eyebrow {
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: 2.2px;
   font-weight: 700;
-  color: #9a7936;
+  color: var(--gold-text);
   margin: 0 0 16px;
 }
 
@@ -225,7 +228,7 @@ select {
 
 .panel-kicker {
   letter-spacing: 2px;
-  font-size: 10px;
+  font-size: 12px;
   color: var(--gold-light);
   margin: 20px 0 8px;
 }
@@ -290,8 +293,8 @@ h2 {
 
 .feature-number {
   display: block;
-  color: #b18a3d;
-  font-size: 11px;
+  color: var(--gold-text);
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 1px;
   margin-bottom: 25px;
@@ -303,8 +306,8 @@ h2 {
 }
 
 .feature-card p {
-  font-size: 13px;
-  color: #77736d;
+  font-size: 14px;
+  color: var(--muted);
   margin: 0;
 }
 
@@ -322,8 +325,10 @@ h2 {
   font-size: clamp(25px, 3vw, 35px);
 }
 
+/* On the dark band the brighter gold is the one with enough contrast */
 .cta-band .eyebrow {
   margin-bottom: 9px;
+  color: var(--gold);
 }
 
 .site-footer {
@@ -340,7 +345,7 @@ h2 {
 }
 
 .site-footer p {
-  font-size: 12px;
+  font-size: 13px;
   color: #a4a097;
   margin: 6px 0 16px;
 }
@@ -353,7 +358,7 @@ h2 {
 }
 
 .footer-links a {
-  font-size: 12px;
+  font-size: 13px;
   transition: color .2s;
 }
 
@@ -362,8 +367,8 @@ h2 {
 }
 
 .site-footer small {
-  font-size: 10px;
-  color: #858179;
+  font-size: 12px;
+  color: #a4a097;
 }
 
 .floating-contact {
@@ -478,7 +483,7 @@ h2 {
 
 .about-statement .muted {
   clear: both; /* start below the floated quote mark, not beside it */
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: 1.5px;
   color: #b5b0a5;
 }
@@ -489,7 +494,7 @@ h2 {
 
 .about-copy p:not(.eyebrow) {
   color: #6c6860;
-  font-size: 14px;
+  font-size: 15px;
 }
 
 .values-section {
@@ -531,7 +536,7 @@ h2 {
 
 .section-heading .muted {
   max-width: 300px;
-  font-size: 12px;
+  font-size: 13px;
 }
 
 .project-grid {
@@ -616,7 +621,7 @@ h2 {
   left: 12px;
   background: #f7f6f2e6;
   color: var(--ink);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
   padding: 4px 8px;
   pointer-events: none;
@@ -743,10 +748,10 @@ h2 {
 }
 
 .project-type {
-  font-size: 9px;
+  font-size: 12px;
   letter-spacing: 1.6px;
   font-weight: 700;
-  color: #a17e37;
+  color: var(--gold-text);
   margin: 0 0 7px;
 }
 
@@ -756,8 +761,8 @@ h2 {
 }
 
 .project-info p:last-child {
-  font-size: 12px;
-  color: #77736d;
+  font-size: 14px;
+  color: var(--muted);
   margin: 0;
 }
 
@@ -786,10 +791,10 @@ h2 {
 }
 
 .contact-detail span {
-  font-size: 9px;
+  font-size: 12px;
   letter-spacing: 1.7px;
   font-weight: 700;
-  color: #9a7936;
+  color: var(--gold-text);
   display: block;
   margin-bottom: 8px;
 }
@@ -857,8 +862,8 @@ h2 {
 }
 
 .small-note {
-  font-size: 11px;
-  color: #8b867c;
+  font-size: 13px;
+  color: var(--muted);
   margin-top: 22px;
 }
 
@@ -873,13 +878,13 @@ h2 {
 }
 
 .contact-form>.muted {
-  font-size: 12px;
+  font-size: 13px;
   margin: 6px 0 24px;
 }
 
 .contact-form label {
   display: block;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
   margin: 16px 0 7px;
 }
@@ -913,14 +918,14 @@ h2 {
 }
 
 .form-status {
-  font-size: 12px;
+  font-size: 13px;
   min-height: 20px;
 }
 
 .privacy-note {
   display: block;
-  color: #8a857b;
-  font-size: 10px;
+  color: var(--muted);
+  font-size: 12px;
 }
 
 /* <address> is italic by default - keep it in the normal font style */
@@ -929,14 +934,14 @@ h2 {
 }
 
 .contact-detail a:hover {
-  color: #9b752d;
+  color: var(--gold-text);
   text-decoration: underline;
 }
 
 /* Character counter under the message box */
 .char-count {
   display: block;
-  font-size: 11px;
+  font-size: 12px;
   color: var(--muted);
   margin-top: 4px;
 }
@@ -949,7 +954,7 @@ h2 {
 }
 
 .radio-group legend {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
   margin-bottom: 7px;
 }
@@ -974,7 +979,7 @@ h2 {
 .reply-hint {
   display: block;
   min-height: 1.4em; /* keep the space so the form doesn't jump when the text changes */
-  font-size: 11px;
+  font-size: 12px;
   color: var(--muted);
   margin-top: 6px;
 }
