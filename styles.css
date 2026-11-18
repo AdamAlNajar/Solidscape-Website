@@ -1065,16 +1065,30 @@ h2 {
   .brand {
     width: 150px;
   }
+  /* The drop-down menu is placed relative to the header, so it always opens
+     directly below it whatever height the logo makes the header */
+  .site-header {
+    position: relative;
+  }
+  /* 44 x 44px is the minimum comfortable size for a finger tap (WCAG 2.5.5) */
   .menu-toggle {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
     margin-left: auto;
+    color: var(--ink);
+    cursor: pointer;
   }
   .navbar {
     display: none;
     position: absolute;
-    top: 82px;
-    left: 0;
-    right: 0;
+    top: 100%;
+    /* reach past the header's side margins so the menu spans the whole screen */
+    left: -24px;
+    right: -24px;
+    box-shadow: 0 12px 20px #0000001a;
     background: var(--paper);
     z-index: 10;
     padding: 20px 24px;
@@ -1086,13 +1100,24 @@ h2 {
   .navbar ul {
     flex-direction: column;
     align-items: stretch;
-    gap: 16px;
+    gap: 0;
   }
   .navbar.open {
     display: flex;
   }
-  .navbar a.active {
+  /* Each menu link fills a full-width row at least 48px tall, so it is easy to tap */
+  .navbar a {
+    display: flex;
+    align-items: center;
+    min-height: 48px;
+    font-size: 16px;
+    border-bottom: 1px solid var(--line);
+  }
+  .navbar li:last-child a {
     border-bottom: 0;
+  }
+  .navbar a.active {
+    border-bottom: 1px solid var(--line);
     padding-bottom: 0;
   }
   .hero {
@@ -1127,6 +1152,11 @@ h2 {
   }
   .brand {
     width: 140px;
+  }
+  .navbar {
+    left: -16px;
+    right: -16px;
+    padding: 8px 16px;
   }
   .hero {
     grid-template-columns: 1fr;
@@ -1208,11 +1238,119 @@ h2 {
     padding: 23px 18px;
   }
   .footer-links {
-    gap: 14px;
+    gap: 4px 18px;
     flex-wrap: wrap;
+  }
+
+  /* ---- Easier to read on a phone: nothing smaller than 13px ---- */
+  .eyebrow,
+  .panel-kicker,
+  .about-statement .muted,
+  .project-number,
+  .carousel-counter,
+  .feature-number,
+  .project-type,
+  .contact-detail span,
+  .site-footer small,
+  .char-count,
+  .reply-hint,
+  .error-message,
+  .privacy-note {
+    font-size: 13px;
+  }
+  .button {
+    font-size: 14px;
+  }
+  .feature-card p,
+  .project-info p:last-child,
+  .contact-detail p,
+  .contact-form label,
+  .radio-group legend,
+  .small-note,
+  .location-hint,
+  .section-heading .muted,
+  .footer-links a,
+  .site-footer p {
+    font-size: 15px;
+  }
+  /* 16px stops iPhones zooming in when a form field is tapped */
+  .contact-form input,
+  .contact-form textarea,
+  .contact-form select {
+    font-size: 16px;
+  }
+
+  /* ---- Bigger tap targets (at least 44px tall) ---- */
+  .button,
+  .footer-brand,
+  .footer-links a,
+  .contact-detail a {
+    min-height: 44px;
+  }
+  .footer-brand,
+  .footer-links a,
+  .contact-detail a {
+    display: inline-flex;
+    align-items: center;
+  }
+  /* Each reply option becomes a full-width row with a larger radio button */
+  .contact-form .radio-group label {
+    display: flex;
+    min-height: 44px;
+    margin: 0;
+    gap: 10px;
+  }
+  .contact-form .radio-group input {
+    width: 20px;
+    height: 20px;
+  }
+  .lightbox-close {
+    width: 48px;
+    height: 48px;
+    top: 8px;
+    right: 8px;
+  }
+
+  /* ---- Floating contact buttons ----
+     On a narrow screen the floating buttons used to sit on top of the page text and
+     hide it. Here they line up in one bar along the bottom of the screen instead,
+     and the page gets extra space at the bottom so the footer is never covered. */
+  body {
+    padding-bottom: 68px;
+  }
+  body::after {
+    content: "";
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 68px;
+    background: var(--paper);
+    border-top: 1px solid var(--line);
+    z-index: 3;
+  }
+  .social-stacked {
+    flex-direction: row;
+    left: 12px;
+    right: auto;
+    bottom: 10px;
   }
   .floating-contact {
     right: 12px;
-    bottom: 12px;
+    bottom: 10px;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    font-size: 14px;
+  }
+}
+
+/* The small "lift" on hover is only for mouse users - on a touch screen
+   it would stay stuck on after the button is tapped */
+@media (hover: none) {
+  .button:hover,
+  .social-icon:hover {
+    transform: none;
   }
 }
