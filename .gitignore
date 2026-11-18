@@ -8,7 +8,6 @@ node_modules/
 rubric.png
 assignment_rubric.png
 *rubric*.png
-report.odt
 
 # Original source folder (kept locally only)
 solidscape_contracting_website/
@@ -19,3 +18,6 @@ solidscape_contracting_website/
 
 # Local AI/tooling output (not part of the website)
 graphify-out/
+
+# Assignment documents - kept locally, not published
+Project Docs/
